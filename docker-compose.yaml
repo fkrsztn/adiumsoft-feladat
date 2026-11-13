@@ -20,6 +20,16 @@ services:
       ads_takehome:
     ports:
       - 8080:80
+    # Az alap image (trafex/php-nginx) healthcheckje a 8080-as portot hívja,
+    # de ebben a konténerben az nginx a 80-ason figyel, így mindig
+    # „unhealthy” lenne. Helyette egy valódi végpontot kérdezünk le: ha
+    # válaszol, a PHP és az adatbázis-kapcsolat is működik.
+    healthcheck:
+      test: ["CMD", "curl", "--silent", "--fail", "--output", "/dev/null", "http://127.0.0.1/regions"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
     depends_on:
       db:
         condition: service_healthy
@@ -57,9 +67,17 @@ services:
       ads_takehome:
     ports:
       - 8300:8000
-    # depends_on:
-    #   db:
-    #     condition: service_healthy
+    # Mint az api-dev-nél: a belső API szerver a 8001-es porton figyel.
+    healthcheck:
+      test: ["CMD", "curl", "--silent", "--fail", "--output", "/dev/null", "http://127.0.0.1:8001/regions"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    # A prod csak a kész (importált) adatbázissal induljon.
+    depends_on:
+      db:
+        condition: service_healthy
 
   db:
     hostname: db
@@ -86,7 +104,11 @@ services:
       interval: 5s
       timeout: 30s
       retries: 10
-      start_period: 0s
+      # Az első indításkor a CSV-k importja ~45 s (lassabb gépen több), ezalatt
+      # a healthcheck még nem sikerülhet. A türelmi időben a hibák nem
+      # számítanak, a konténer viszont az első sikeres ellenőrzéskor rögtön
+      # „healthy” lesz, így a további indításokat ez nem lassítja.
+      start_period: 300s
 
   # TODO: dist
 
