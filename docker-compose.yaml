@@ -7,6 +7,8 @@ services:
       context: ./docker
     environment:
       XDEBUG_MODE: ${XDEBUG_MODE:-off}
+      # Debug módban a 500-as hibaválasz a stack trace-t is tartalmazza.
+      APP_DEBUG: "true"
     volumes:
       - ./api:/var/www/html
     extra_hosts:
