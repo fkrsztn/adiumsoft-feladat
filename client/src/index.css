@@ -1,1 +1,30 @@
 @import "tailwindcss";
+
+/*
+ * Vizuális irány: „időjárási napló”. Hűvös, papírszerű háttér, tintasötét
+ * szöveg, tintakék kiemelés; a címek a műszercímkéket idéző Barlow
+ * Condensed, a szöveg és a számok Barlow betűvel.
+ */
+@theme {
+  --font-sans: "Barlow", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Barlow Condensed", "Barlow", ui-sans-serif, sans-serif;
+
+  --color-paper: #f1f4f3;
+  --color-paper-deep: #e6ebe9;
+  --color-ink: #1b2730;
+  --color-ink-muted: #5a6a72;
+  --color-ink-faint: #8b979c;
+  --color-rule: #d5dcda;
+  --color-accent: #2350a0;
+  --color-accent-deep: #1a3d7c;
+  --color-danger: #9b2c22;
+  --color-danger-soft: #f6e4e1;
+}
+
+@layer base {
+  html {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+}

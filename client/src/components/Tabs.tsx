@@ -15,7 +15,7 @@ type TabsProps = {
  */
 export function Tabs({ current }: TabsProps) {
   return (
-    <nav aria-label="Nézetek" className="flex gap-1 border-b border-slate-200">
+    <nav aria-label="Nézetek" className="flex gap-6">
       {(Object.keys(LABELS) as Route[]).map((route) => {
         const active = route === current;
         return (
@@ -23,10 +23,10 @@ export function Tabs({ current }: TabsProps) {
             key={route}
             href={routeHref(route)}
             aria-current={active ? "page" : undefined}
-            className={`-mb-px border-b-2 px-4 py-2 text-sm font-medium transition-colors ${
+            className={`font-display border-b-2 pb-1 text-xl font-medium tracking-wide uppercase transition-colors ${
               active
-                ? "border-sky-600 text-sky-700"
-                : "border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-800"
+                ? "border-accent text-ink"
+                : "border-transparent text-ink-muted hover:border-rule hover:text-ink"
             }`}
           >
             {LABELS[route]}

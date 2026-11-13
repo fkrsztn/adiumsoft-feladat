@@ -65,3 +65,16 @@ function errorMessage(error: unknown): string {
     ? error.message
     : "Váratlan hiba történt. Próbáld újra.";
 }
+
+/**
+ * Sikeres állapot adatának átalakítása (pl. városlista → választólista
+ * elemei); a többi állapot változatlan marad.
+ */
+export function mapRequestState<T, U>(
+  state: RequestState<T>,
+  map: (data: T) => U,
+): RequestState<U> {
+  return state.status === "success"
+    ? { status: "success", data: map(state.data) }
+    : state;
+}
