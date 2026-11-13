@@ -6,6 +6,7 @@ namespace ADS\TakeHome\Repositories;
 
 use ADS\TakeHome\Domain\DailyWeather;
 use ADS\TakeHome\Domain\DateRange;
+use ADS\TakeHome\Domain\Rounding;
 use ADS\TakeHome\Framework\DatabaseInterface;
 
 /**
@@ -106,6 +107,6 @@ final class WeatherRepository
         if ($value === null || (float) $value === self::MISSING_VALUE) {
             return null;
         }
-        return round((float) $value, 1);
+        return Rounding::toMeasurement((float) $value);
     }
 }

@@ -22,4 +22,17 @@ final readonly class DailyWeather
         public float|null $precipitation,
     ) {
     }
+
+    /**
+     * Átlaghőmérséklet: (minimum + maximum) / 2, egy tizedesre kerekítve.
+     *
+     * `null`, ha a minimum vagy a maximum hiányzik.
+     */
+    public function avgTemp(): float|null
+    {
+        if ($this->minTemp === null || $this->maxTemp === null) {
+            return null;
+        }
+        return Rounding::toMeasurement(($this->minTemp + $this->maxTemp) / 2);
+    }
 }

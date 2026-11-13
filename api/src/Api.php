@@ -38,6 +38,7 @@ final class Api
         $router->addRoute("GET", "/cities", self::withErrorResponses($cityController->listCities(...)));
         $router->addRoute("GET", "/regions", self::withErrorResponses($cityController->listRegions(...)));
         $router->addRoute("GET", "/weather/city", self::withErrorResponses($weatherController->cityWeather(...)));
+        $router->addRoute("GET", "/weather/region", self::withErrorResponses($weatherController->regionWeather(...)));
         return $router;
     }
 

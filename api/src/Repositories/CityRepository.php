@@ -28,13 +28,17 @@ final class CityRepository
      */
     public function findAll(): array
     {
-        $cities = array_map($this->toCity(...), $this->db->queryAssoc(self::SELECT_CITIES));
+        return $this->findSortedByName(self::SELECT_CITIES);
+    }
 
-        // PHP-ban rendezünk, nem SQL-ben, mert a névjavítás a lekérdezés után
-        // történik, és a javított névnek is a helyére kell kerülnie.
-        $collator = self::createCollator();
-        usort($cities, fn (City $a, City $b) => (int) $collator->compare($a->name, $b->name));
-        return $cities;
+    /**
+     * A régió városai, név szerint ábécérendben. Ismeretlen régióra üres lista.
+     *
+     * @return list<City>
+     */
+    public function findByRegion(string $region): array
+    {
+        return $this->findSortedByName(self::SELECT_CITIES . " WHERE region = :region", [":region" => $region]);
     }
 
     public function findById(int $cityId): City|null
@@ -57,6 +61,22 @@ final class CityRepository
         // nem az ábécérendet, ezért itt is PHP-ban rendezünk.
         self::createCollator()->sort($regions);
         return $regions;
+    }
+
+    /**
+     * @param array<string, scalar|null> $params
+     *
+     * @return list<City>
+     */
+    private function findSortedByName(string $sql, array $params = []): array
+    {
+        $cities = array_map($this->toCity(...), $this->db->queryAssoc($sql, $params));
+
+        // PHP-ban rendezünk, nem SQL-ben, mert a névjavítás a lekérdezés után
+        // történik, és a javított névnek is a helyére kell kerülnie.
+        $collator = self::createCollator();
+        usort($cities, fn (City $a, City $b) => (int) $collator->compare($a->name, $b->name));
+        return $cities;
     }
 
     /**
