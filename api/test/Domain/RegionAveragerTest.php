@@ -51,6 +51,21 @@ class RegionAveragerTest extends TestCase
     }
 
     #[Test]
+    public function averageRoundsHalfAwayFromZeroDespiteFloatingPointError(): void
+    {
+        // Valódi adat: Dunántúl, 2004-03-13, minimum. Lebegőpontosan
+        // (1.0 + 0.0 + 0.4 - 1.2) / 4 = 0.0499999…, ami 0.0-ra kerekedne; a helyes érték 0.05 → 0.1.
+        $days = RegionAverager::average([
+            1 => [new DailyWeather("2004-03-13", 1.0, null, null)],
+            2 => [new DailyWeather("2004-03-13", 0.0, null, null)],
+            3 => [new DailyWeather("2004-03-13", 0.4, null, null)],
+            4 => [new DailyWeather("2004-03-13", -1.2, null, null)],
+        ]);
+
+        $this->assertSame(0.1, $days[0]->minTemp);
+    }
+
+    #[Test]
     public function averageIsNeverNegativeZero(): void
     {
         // (0.3 - 0.1 - 0.2) / 3 a lebegőpontos ábrázolás miatt -9e-18, kerekítve -0.0 lenne.

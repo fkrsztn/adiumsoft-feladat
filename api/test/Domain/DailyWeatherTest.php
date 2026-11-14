@@ -25,6 +25,15 @@ class DailyWeatherTest extends TestCase
     }
 
     #[Test]
+    public function avgTempRoundsHalfAwayFromZeroDespiteFloatingPointError(): void
+    {
+        // Valódi adat: Pécs, 1929-01-05. Lebegőpontosan (-1.3 + 1.4) / 2 = 0.0499999…,
+        // ami 0.0-ra kerekedne; a helyes érték 0.05 → 0.1.
+        $this->assertSame(0.1, (new DailyWeather("1929-01-05", -1.3, 1.4, 9.9))->avgTemp());
+        $this->assertSame(-0.1, (new DailyWeather("2023-01-01", -1.4, 1.3, null))->avgTemp());
+    }
+
+    #[Test]
     public function avgTempIsNullWhenMinOrMaxIsMissing(): void
     {
         $this->assertNull((new DailyWeather("2023-01-01", null, 8.4, 0.0))->avgTemp());

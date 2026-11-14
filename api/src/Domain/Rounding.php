@@ -31,4 +31,25 @@ final class Rounding
     {
         return self::round($value, self::MEASUREMENT_DECIMALS);
     }
+
+    /**
+     * Mért értékek átlaga, a mérés pontosságára (egy tizedes) kerekítve.
+     *
+     * Az értékeket előbb egész tizedekre váltja, mert azok összege pontos.
+     * Lebegőpontos összeadással a „fél” határeset elcsúszhat: például
+     * (-1.3 + 1.4) / 2 a gépen 0.0499999…, ami 0.0-ra kerekedne 0.1 helyett.
+     * Egész tizedekben (-13 + 14) / 2 = 0.5 tized, ez a nullától távolodva
+     * 1 tized, vagyis 0.1, ugyanúgy, ahogy a többi kerekítés.
+     *
+     * @param non-empty-list<float> $values
+     */
+    public static function meanOfMeasurements(array $values): float
+    {
+        $scale = 10 ** self::MEASUREMENT_DECIMALS;
+        $sumOfTenths = 0;
+        foreach ($values as $value) {
+            $sumOfTenths += (int) round($value * $scale);
+        }
+        return self::round(round($sumOfTenths / count($values)) / $scale, self::MEASUREMENT_DECIMALS);
+    }
 }

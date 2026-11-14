@@ -49,10 +49,10 @@ final class RegionAverager
      */
     private static function mean(array $values): float|null
     {
-        $measured = array_filter($values, fn (float|null $value) => $value !== null);
+        $measured = array_values(array_filter($values, fn (float|null $value) => $value !== null));
         if ($measured === []) {
             return null;
         }
-        return Rounding::toMeasurement(array_sum($measured) / count($measured));
+        return Rounding::meanOfMeasurements($measured);
     }
 }

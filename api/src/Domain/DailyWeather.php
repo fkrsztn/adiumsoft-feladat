@@ -33,6 +33,6 @@ final readonly class DailyWeather
         if ($this->minTemp === null || $this->maxTemp === null) {
             return null;
         }
-        return Rounding::toMeasurement(($this->minTemp + $this->maxTemp) / 2);
+        return Rounding::meanOfMeasurements([$this->minTemp, $this->maxTemp]);
     }
 }
