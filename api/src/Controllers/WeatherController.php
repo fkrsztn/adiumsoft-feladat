@@ -20,8 +20,9 @@ use ADS\TakeHome\Services\WeatherService;
 final class WeatherController
 {
     /**
-     * Az értékek mértékegysége a válaszban. A kliens ebből indul ki, ha
-     * angolszász mértékegységre vált.
+     * Az értékek mértékegysége a válaszban, hogy a JSON önmagában is
+     * értelmezhető legyen. Az API mindig SI mértékegységben válaszol; az
+     * angolszász mértékegységre váltás a kliensen történik.
      */
     private const UNITS = [
         "temperature" => "°C",

@@ -8,6 +8,9 @@ type UnitToggleProps = {
 /**
  * Mértékegység-váltó (SI ↔ angolszász). Rádiógombokból áll, így
  * billentyűzettel és képernyőolvasóval is kezelhető.
+ *
+ * A látható „Mértékegység” felirat keskeny képernyőn rejtve van, mert ott a
+ * fülek mellett nem fér el; a képernyőolvasó a `legend`-et mindig megkapja.
  */
 export function UnitToggle({ value, onChange }: UnitToggleProps) {
   return (
@@ -15,7 +18,7 @@ export function UnitToggle({ value, onChange }: UnitToggleProps) {
       <legend className="sr-only">Mértékegység</legend>
       <span
         aria-hidden="true"
-        className="font-display text-sm tracking-[0.12em] text-ink-muted uppercase"
+        className="hidden font-display text-sm tracking-[0.12em] text-ink-muted uppercase sm:inline"
       >
         Mértékegység
       </span>

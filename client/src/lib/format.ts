@@ -57,7 +57,7 @@ export function formatMedian(value: number | null, unit: Unit): string {
 
 /**
  * Módusz, pl. „12,3 °C (3×)”, holtversenyben „12,3 / 14,1 °C (3×)”; sok
- * értéknél az első néhány után „+N”. Ha nincs módusz: „nincs”.
+ * értéknél csak az első néhány, utána „és még N érték”. Ha nincs módusz: „nincs”.
  */
 export function formatMode(mode: Mode, unit: Unit): string {
   if (mode.values.length === 0) {
@@ -70,8 +70,8 @@ export function formatMode(mode: Mode, unit: Unit): string {
     )
     .join(" / ");
   const hidden = mode.values.length - MAX_LISTED_MODES;
-  const more = hidden > 0 ? ` +${hidden}` : "";
-  return `${listed}${more} ${unit.symbol} (${mode.count}×)`;
+  const more = hidden > 0 ? ` és még ${hidden} érték` : "";
+  return `${listed} ${unit.symbol} (${mode.count}×)${more}`;
 }
 
 const dateWithWeekdayFormat = new Intl.DateTimeFormat("hu-HU", {

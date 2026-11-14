@@ -63,10 +63,10 @@ describe("formatMode", () => {
     );
   });
 
-  it("háromnál több értéknél „+N”", () => {
+  it("háromnál több értéknél „és még N érték”", () => {
     expect(
       formatMode({ values: [2.3, 4.9, 6.6, 17.5, 23.4], count: 4 }, celsius),
-    ).toBe("2,3 / 4,9 / 6,6 +2 °C (4×)");
+    ).toBe("2,3 / 4,9 / 6,6 °C (4×) és még 2 érték");
   });
 
   it("nincs módusz: „nincs”", () => {
