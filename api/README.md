@@ -83,3 +83,5 @@ docker exec takehome-api-dev vendor/bin/phpunit      # tesztek
 docker exec takehome-api-dev composer analyse        # statikus elemzés (phpstan, 8-as szint)
 docker exec takehome-api-dev composer format         # kódformázás (php-cs-fixer)
 ```
+
+Az `analyse` script `--memory-limit=256M` kapcsolót kapott: friss konténerben, gyorsítótár nélkül a PHPStan kb. 130 MB-ot használ, a PHP alapkorlátja pedig 128 MB.

@@ -2,7 +2,7 @@
     "name": "ads/takehome-task",
     "type": "project",
     "scripts": {
-        "analyse": "phpstan analyse -c phpstan.neon",
+        "analyse": "phpstan analyse -c phpstan.neon --memory-limit=256M",
         "format": "php-cs-fixer fix"
     },
     "autoload": {
